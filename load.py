@@ -30,6 +30,7 @@ class MitigationKind(StrEnum):
                 }[self]
 
 class MitigationTime(StrEnum):
+    longterm = auto()
     preparation = auto()
     before = auto()
     during = auto()
@@ -38,11 +39,12 @@ class MitigationTime(StrEnum):
 
     def to_int(self):
         return {
-                MitigationTime.preparation: 0,
-                MitigationTime.before: 1,
-                MitigationTime.during: 2,
-                MitigationTime.after: 3,
-                MitigationTime.onfailure: 4,
+                MitigationTime.longterm: 0,
+                MitigationTime.preparation: 1,
+                MitigationTime.before: 2,
+                MitigationTime.during: 3,
+                MitigationTime.after: 4,
+                MitigationTime.onfailure: 5,
                 }[self]
 
 

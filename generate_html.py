@@ -18,10 +18,11 @@ def print_mitigation(mitigation):
             MitigationKind.impact: "bi-bandaid",
             }[mitigation.kind]
     time_tag = {
-            MitigationTime.preparation: "bi-calendar3",
+            MitigationTime.longterm: "bi-calendar3",
+            MitigationTime.preparation: "bi-clock",
             MitigationTime.before: "bi-list-check",
             MitigationTime.during: "bi-repeat",
-            MitigationTime.after: "bi-clock",
+            MitigationTime.after: "bi-door-open",
             MitigationTime.onfailure: "bi-exclamation-triangle",
             }[mitigation.time]
 

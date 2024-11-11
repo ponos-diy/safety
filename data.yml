@@ -158,7 +158,7 @@ mitigations:
     description: Use condom over all contact areas.
   vaccination:
     kind: prevention
-    time: preparation
+    time: longterm
     description: Get vaccination against relevant infections.
   test-of-partner:
     kind: prevention
@@ -197,6 +197,8 @@ specific:
       - failure: reduced-gag-reflex
       - failure: throat-stretching
       - failure: esophageal-sphincter-stretching
+      - failure: transmission-via-body-fluids
+        mitigations: [condom]
 
   wax-play:
     risks:
