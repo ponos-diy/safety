@@ -34,6 +34,11 @@ failures:
     impacts: [local-infection, systemic-infection]
     mitigations: [vaccination, test-of-partner]
 
+  bondage-drop:
+    description: Dropping to the floor while being incapable of stopping the fall.
+    impacts: [concussion, bone-break, lacerations]
+    mitigations: [spot-against-falling]
+
 impacts:
   nerve-damage:
     description: Damaged nerves lead to loss of sensory and motor functions.
@@ -60,6 +65,12 @@ impacts:
     description: Increased/stronger instances of heartburn in everyday life.
   burns:
     description: Skin burns
+  concussion:
+    description: Concussion
+  bone-break:
+    description: Broken bones
+  lacerations:
+    description: Lacerations
 
 mitigations:
   # kind: prevention, detection, impact
@@ -164,7 +175,10 @@ mitigations:
     kind: prevention
     time: preparation
     description: Test partners for relevant infections regularly.
-
+  spot-against-falling:
+    kind: impact
+    time: during
+    description: Keep ready to catch dropping person.
 
 specific:
   bondage:
@@ -184,6 +198,12 @@ specific:
         impacts: [nerve-damage, blood-extremity]
         mitigations: [no-body-on-bondage, rounded-corners, cuffliners]
       - failure: key-lost
+
+  bondage-standing:
+    inherits:
+      - bondage
+    risks:
+      - failure: bondage-drop
 
   biting:
     risks:
