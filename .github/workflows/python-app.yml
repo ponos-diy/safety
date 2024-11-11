@@ -1,28 +1,18 @@
-# This is a basic workflow to help you get started with Actions
-
 name: CI
 
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  build_html:
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
       - name: set up python
         uses: actions/setup-python@v5
@@ -37,3 +27,24 @@ jobs:
         with:
           name: html
           path: output/safety.html
+  build_latex:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: set up python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.11
+      - name: install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: generate latex
+        run: python generate_latex.py data.yml
+      - uses: xu-cheng/latex-action@v3
+        with:
+          root_file: output/safety.tex
+          work_in_root_file_dir: true
+      - name: save artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: pdf
+          path: output/safety.pdf
