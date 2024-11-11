@@ -10,8 +10,8 @@ data = load(data_file)
 
 
 preamble = r"""
-\documentclass[a4paper]{article}
-\usepackage[a4paper]{geometry}
+\documentclass[a5paper]{article}
+\usepackage[a5paper]{geometry}
 \usepackage{longtable}
 \usepackage{hyperref}
 \usepackage{fontawesome5}
@@ -21,6 +21,7 @@ preamble = r"""
 \begin{document}
 
 \maketitle
+\clearpage
 \tableofcontents
 
 
@@ -30,7 +31,7 @@ closing = r"""
 \end{document}
 """
 
-def print_mitigation(mitigation: Mitigation):
+def print_mitigation(mitigation: Mitigation, show_time=True):
     kind_tag = {
             MitigationKind.prevention: r"\faUserShield",
             MitigationKind.detection: r"\faEye",
@@ -44,6 +45,8 @@ def print_mitigation(mitigation: Mitigation):
             MitigationTime.after: r"\faDoorOpen",
             MitigationTime.onfailure: r"\faExclamationTriangle",
             }[mitigation.time]
+    if not show_time:
+        time_tag = ""
     return f"{time_tag} {kind_tag} {mitigation.description}"
 
 def make_item_list(items: list[str]) -> str:
@@ -57,8 +60,8 @@ def make_filtered_mitigation_list(mitigations: list[Mitigation], time_filter: Mi
     filtered_mitigations = [m for m in mitigations if m.time == time_filter]
     if not filtered_mitigations:
         return ""
-    result = rf"\subsection{{{heading}}}"
-    result += make_item_list([print_mitigation(m) for m in filtered_mitigations])
+    result = heading
+    result += make_item_list([print_mitigation(m, show_time=False) for m in filtered_mitigations])
     return result
 
 def make_checklists(data):
