@@ -28,6 +28,8 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: 3.11
+      - name: install dependencies
+        run: python -m pip install -r requirements.txt
       - name: generate html
         run: python generate_html.py data.yml
       - name: save artifacts
