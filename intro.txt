@@ -1,0 +1,5 @@
+We do not provide any information about probabilities of occurrences. These would be hard to determine and depend on many unknown factors.
+We do not provide severity information or any other risk classification, because severity is highly subjective (e.g. scarring might be acceptable for one, and a big problem for others).
+Determining risk acceptance criteria is up to the users.
+We do not provide information about how specifically a measure is to be implemented. Providing accurate information about every measure would overload this project.
+We do not provide links to additional resources. Checking links for accuracy would overload this project.

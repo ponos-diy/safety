@@ -1,0 +1,206 @@
+failures:
+  bondage-close:
+    description: Bondage item constricts unexpectedly.
+  bondage-outside-pressure:
+    description: External pressure to bondage item is translated to body.
+  locking-mechanism-stuck:
+    description: Locking mechanism is stuck closed.
+  key-lost:
+    description: Key to bondage equipment is lost.
+    impacts: [stuck-in-bondage]
+    mitigations: [backup-key]
+  bondage-pull:
+    description: Strong pulling force between bondage equipment and other object.
+  puncture-infection:
+    description: Infection at punctured location
+  vomit-aspiration:
+    description: Vomit is sucked into lungs.
+    impacts: [aspiration]
+  reduced-gag-reflex:
+    description: Gag reflex is reduced.
+    impacts: [long-term-no-gag-reflex]
+  throat-stretching:
+    description: Cartilage in throat gets stretched.
+    impacts: [no-swallowing]
+    mitigations: [limit-penetrating-object-width]
+  esophageal-sphincter-stretching:
+    description: The esophageal sphincter gets stretched.
+    impacts: [heartburn]
+    mitigations: [limit-penetrating-object-length]
+  high-temperature-wax:
+    description: The wax has a temperature higher than intended.
+  transmission-via-body-fluids:
+    description: Transmission of an infection via body fluids.
+    impacts: [local-infection, systemic-infection]
+    mitigations: [vaccination, test-of-partner]
+
+impacts:
+  nerve-damage:
+    description: Damaged nerves lead to loss of sensory and motor functions.
+    mitigations: [check-tactile-sensors, check-motor-functions]
+  blood-extremity:
+    description: Blood circulation is constricted and does not reach extremeties.
+    mitigations: [check-perfusion]
+  stuck-in-bondage:
+    description: Subject is stuck in bondage.
+    mitigations: [emergency-bondage-cutter]
+  local-infection:
+    description: Local infection.
+  systemic-infection:
+    description: Systemic infection.
+    mitigations: [vaccination, test-of-partner]
+  aspiration:
+    description: Aspiration (suction) of fluids or objects into the lungs.
+    mitigations: [recovery-position, emergency-services]
+  long-term-no-gag-reflex:
+    description: Long term choking hazard. Increased coughing during everyday life.
+  no-swallowing:
+    description: Swallowing becomes harder or impossible in everyday life.
+  heartburn:
+    description: Increased/stronger instances of heartburn in everyday life.
+  burns:
+    description: Skin burns
+
+mitigations:
+  # kind: prevention, detection, impact
+  # time: preparation, before, during, after
+  double-lock:
+    kind: prevention
+    time: during
+    description: Engage double-lock mechanism.
+  buy-double-lock:
+    kind: prevention
+    time: preparation
+    description: Buy handcuffs with double-lock mechanism.
+  no-body-on-bondage:
+    kind: prevention
+    time: during
+    description: Do not use bondage item under body.
+  check-tactile-sensors:
+    kind: detection
+    time: during
+    description: Check whether touch can be detected.
+  check-motor-functions:
+    kind: detection
+    time: during
+    description: Check whether full force can be asserted.
+  check-perfusion:
+    kind: detection
+    time: during
+    description: Check whether body part has blood circulation.
+  backup-key:
+    kind: prevention
+    time: before
+    description: Keep a backup key for all locks.
+  separate-cuff-chain-locks:
+    kind: prevention
+    time: during
+    description: Use separate locks to lock cuffs closed and connect cuffs to other objects.
+  emergency-bondage-cutter:
+    kind: prevention
+    time: before
+    description: Have an emergency cutting device at hand which is capable of cutting the used bondage gear.
+  no-pulling-by-bondage:
+    kind: prevention
+    time: during
+    description: Do not pull subject by bondage equipment.
+  no-suspension:
+    kind: prevention
+    time: before
+    description: Do not suspend subject by bondage equipment.
+  desinfect-skin-after:
+    kind: prevention
+    time: after
+    description: Desinfect skin after playing.
+  desinfect-skin-before:
+    kind: prevention
+    time: before
+    description: Desinfect skin before playing.
+  recovery-position:
+    kind: impact
+    time: onfailure
+    description: Put subject into recovery position.
+  emergency-services:
+    kind: impact
+    time: onfailure
+    description: Call emergency services immediately.
+  limit-penetrating-object-length:
+    kind: prevention
+    time: during
+    description: Limit penetrating length of object by reducing object length or inserted length.
+  limit-penetrating-object-width:
+    kind: prevention
+    time: preparation
+    description: Limit width/girth/circumference of penetrating object.
+  rounded-corners:
+    kind: prevention
+    time: preparation
+    description: Buy object with rounded corners.
+  cuffliners:
+    kind: prevention
+    time: before
+    description: Use cuffliners.
+  low-temperature-wax:
+    kind: prevention
+    time: preparation
+    description: Buy wax with melting point below skin burning temperature.
+  no-full-melt-wax:
+    kind: prevention
+    time: during
+    description: Do not use wax which is fully melted inside a container (e.g. tea lights).
+  increase-distance:
+    kind: prevention
+    time: during
+    description: Increase distance between object and subject.
+  condom:
+    kind: prevention
+    time: during
+    description: Use condom over all contact areas.
+  vaccination:
+    kind: prevention
+    time: preparation
+    description: Get vaccination against relevant infections.
+  test-of-partner:
+    kind: prevention
+    time: preparation
+    description: Test partners for relevant infections regularly.
+
+
+specific:
+  handcuffs:
+    risks:
+      - failure: bondage-close
+        impacts: [nerve-damage, blood-extremity]
+        mitigations: [buy-double-lock, double-lock]
+      - failure: bondage-outside-pressure
+        impacts: [nerve-damage, blood-extremity]
+        mitigations: [no-body-on-bondage, rounded-corners, cuffliners]
+      - failure: bondage-pull
+        impacts: [nerve-damage, blood-extremity]
+        mitigations: [no-pulling-by-bondage, no-suspension, cuffliners]
+      - failure: key-lost
+
+  biting:
+    risks:
+      - failure: puncture-infection
+        impacts: [local-infection]
+        mitigations: [desinfect-skin-after]
+
+  deepthroat:
+    risks:
+      - failure: vomit-aspiration
+      - failure: reduced-gag-reflex
+      - failure: throat-stretching
+      - failure: esophageal-sphincter-stretching
+
+  wax-play:
+    risks:
+      - failure: high-temperature-wax
+        impacts: [burns]
+        mitigations: [low-temperature-wax, no-full-melt-wax, increase-distance]
+
+  penis-vagina-sex:
+    risks:
+      - failure: transmission-via-body-fluids
+        mitigations: [condom]
+

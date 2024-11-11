@@ -29,7 +29,7 @@ jobs:
         with:
           python-version: 3.11
       - name: generate html
-        run: python generate_html.py
+        run: python generate_html.py data.yml
       - name: save artifacts
         uses: actions/upload-artifact@v4
         with:
