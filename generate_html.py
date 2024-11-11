@@ -34,9 +34,14 @@ def make_full_table(data):
         for i, risk in enumerate(category.risks):
             table+= "<tr>"
             if i == 0:
-                table += f"""<td rowspan="{rowspan}">{category.name}</td>"""
+                table += f"""<td rowspan="{rowspan}">{category.name}"""
+                for base in category.specializations:
+                    table += f'<br/>see also {base.name}'
+                table += """</td>"""
+
+            inherited_text = f'<span class="fw-lighter">(inherited from {risk.inherited_from})</span>' if risk.inherited_from else ""
             table += f"""
-            <td>{risk.failure_link.description}</td>
+            <td>{risk.failure_link.description}{inherited_text}</td>
             <td>{'<br/>'.join(il.description for il in risk.impact_links)}</td>
             <td>{'<br/>'.join(print_mitigation(ml) for ml in sort_mitigations(risk.mitigation_links))}</td>
             </tr>

@@ -167,7 +167,15 @@ mitigations:
 
 
 specific:
+  bondage:
+    risks:
+      - failure: bondage-pull
+        impacts: [nerve-damage, blood-extremity]
+        mitigations: [no-pulling-by-bondage, no-suspension, cuffliners]
+
   handcuffs:
+    inherits:
+      - bondage
     risks:
       - failure: bondage-close
         impacts: [nerve-damage, blood-extremity]
@@ -175,9 +183,6 @@ specific:
       - failure: bondage-outside-pressure
         impacts: [nerve-damage, blood-extremity]
         mitigations: [no-body-on-bondage, rounded-corners, cuffliners]
-      - failure: bondage-pull
-        impacts: [nerve-damage, blood-extremity]
-        mitigations: [no-pulling-by-bondage, no-suspension, cuffliners]
       - failure: key-lost
 
   biting:

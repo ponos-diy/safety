@@ -1,5 +1,7 @@
+from __future__ import annotations
 from enum import StrEnum, auto
 from typing import Any
+import copy
 
 from pydantic import BaseModel, Field
 import yaml
@@ -73,6 +75,7 @@ class Failure(BaseModel):
     
     impact_links: None | list[Impact] = None
     mitigation_links: None | list[Mitigation] = None
+
 class Risk(BaseModel):
     failure: str
     impacts: list[str] = []
@@ -81,10 +84,13 @@ class Risk(BaseModel):
     failure_link: None | Failure = None
     impact_links: None | list[Impact] = None
     mitigation_links: None | list[Mitigation] = None
+    inherited_from: None | str = None
 
 class Category(BaseModel):
     name: None | str = None
     risks: list[Risk]
+    inherits: list[str] = []
+    specializations: list[Category] = []
 
 class DataModel(BaseModel):
     failures: dict[str, Failure]
@@ -118,6 +124,27 @@ def find_impacts(data: DataModel, impacts: list[str]):
     assert isinstance(impacts, list)
     return [find_in_dict(data.impacts, i, "impacts") for i in impacts]
 
+def resolve_inheritance(data: DataModel):
+    def get_inheritance_depth(category: Category):
+        if not category.inherits:
+            return 0
+        else:
+            return max((get_inheritance_depth(find_in_dict(data.specific, i, "inherits")) for i in category.inherits)) + 1
+    depths = [(category, get_inheritance_depth(category)) for category in data.specific.values()]
+    max_depth = max(d[1] for d in depths)
+    print(f"max depth = {max_depth}")
+    for i in range(1, max_depth+1):
+        print(f"depth = {i}")
+        for category_to in [d[0] for d in depths if d[1]==i]:
+            for category_from_name in category_to.inherits:
+                category_from = find_in_dict(data.specific, category_from_name, "inherits")
+                if not category_to in category_from.specializations:
+                    category_from.specializations.append(category_to)
+                for risk in category_from.risks:
+                    new_risk = risk.model_copy(deep=False, update={"inherited_from": category_from_name})
+                    category_to.risks.append(new_risk)
+
+
 
 def link(data: DataModel):
     for impact in data.impacts.values():
@@ -134,6 +161,9 @@ def link(data: DataModel):
             risk.failure_link = find_in_dict(data.failures, risk.failure, "failures")
             risk.impact_links = make_unique(find_impacts(data, risk.impacts) + risk.failure_link.impact_links)
             risk.mitigation_links = make_unique(find_mitigations(data, risk.mitigations) + risk.failure_link.mitigation_links + [ml for impact in risk.impact_links for ml in impact.mitigation_links])
+
+    resolve_inheritance(data)
+    DataModel.validate(data)
 
 
 def load(filename):
